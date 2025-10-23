@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - The Connection Hub</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ocean-blue': '#007bff',
+                        'sky-teal': '#00d4ff',
+                        'mint-green': '#90ee90',
+                        'rose-pink': '#ffb6c1',
+                        'dark-blue': '#1A202C',
+                        'medium-gray': '#4A5568',
+                        'light-gray': '#EDF2F7',
+                    },
+                    fontFamily: {
+                        'primary': ['Inter', 'sans-serif'],
+                        'secondary': ['DM Serif Display', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-primary bg-light-gray min-h-screen">
+    
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex items-center justify-between">
+                <h1 class="font-secondary text-3xl text-dark-blue">Admin Dashboard</h1>
+                <a href="/" class="text-ocean-blue hover:underline">← Back to Home</a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        
+        <!-- Statistics Cards -->
+        <div class="grid md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl p-6 shadow-lg">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-medium-gray text-sm font-semibold uppercase">Total Users</h3>
+                    <svg class="w-8 h-8 text-ocean-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                </div>
+                <p id="total-users" class="text-4xl font-bold text-dark-blue">-</p>
+            </div>
+            
+            <div class="bg-white rounded-xl p-6 shadow-lg">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-medium-gray text-sm font-semibold uppercase">Active Users</h3>
+                    <svg class="w-8 h-8 text-mint-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <p id="active-users" class="text-4xl font-bold text-dark-blue">-</p>
+            </div>
+            
+            <div class="bg-white rounded-xl p-6 shadow-lg">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-medium-gray text-sm font-semibold uppercase">Today's Signups</h3>
+                    <svg class="w-8 h-8 text-sky-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                    </svg>
+                </div>
+                <p id="today-signups" class="text-4xl font-bold text-dark-blue">-</p>
+            </div>
+            
+            <div class="bg-white rounded-xl p-6 shadow-lg">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-medium-gray text-sm font-semibold uppercase">Today's Logins</h3>
+                    <svg class="w-8 h-8 text-rose-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                    </svg>
+                </div>
+                <p id="today-logins" class="text-4xl font-bold text-dark-blue">-</p>
+            </div>
+        </div>
+        
+        <!-- Users Table -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="px-6 py-4 border-b border-light-gray">
+                <h2 class="font-secondary text-2xl text-dark-blue">All Users</h2>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-light-gray">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-medium-gray uppercase tracking-wider">ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-medium-gray uppercase tracking-wider">Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-medium-gray uppercase tracking-wider">Email</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-medium-gray uppercase tracking-wider">Created</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-medium-gray uppercase tracking-wider">Last Login</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-medium-gray uppercase tracking-wider">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table" class="divide-y divide-light-gray">
+                        <tr>
+                            <td colspan="6" class="px-6 py-8 text-center text-medium-gray">
+                                <svg class="animate-spin h-8 w-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Loading users...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Database Info -->
+        <div class="mt-8 bg-white rounded-xl shadow-lg p-6">
+            <h2 class="font-secondary text-2xl text-dark-blue mb-4">Database Information</h2>
+            <div class="grid md:grid-cols-2 gap-4 text-sm">
+                <div>
+                    <p class="text-medium-gray mb-1"><strong>Database Type:</strong> SQLite (sql.js)</p>
+                    <p class="text-medium-gray mb-1"><strong>Location:</strong> ./database/users.db</p>
+                    <p class="text-medium-gray mb-1"><strong>Tables:</strong> users, login_history, user_profiles, sessions</p>
+                </div>
+                <div>
+                    <p class="text-medium-gray mb-1"><strong>Encryption:</strong> bcryptjs (10 salt rounds)</p>
+                    <p class="text-medium-gray mb-1"><strong>Session Type:</strong> Express Session</p>
+                    <p class="text-medium-gray mb-1"><strong>Foreign Keys:</strong> Enabled</p>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+    
+    <!-- JavaScript -->
+    <script>
+        // Fetch statistics
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/admin/stats');
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('total-users').textContent = data.stats.totalUsers;
+                    document.getElementById('active-users').textContent = data.stats.activeUsers;
+                    document.getElementById('today-signups').textContent = data.stats.todaySignups;
+                    document.getElementById('today-logins').textContent = data.stats.todayLogins;
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+        
+        // Fetch users
+        async function loadUsers() {
+            try {
+                const response = await fetch('/api/admin/users');
+                const data = await response.json();
+                
+                if (data.success && data.users.length > 0) {
+                    const tbody = document.getElementById('users-table');
+                    tbody.innerHTML = data.users.map(user => `
+                        <tr class="hover:bg-light-gray transition-colors">
+                            <td class="px-6 py-4 text-sm text-dark-blue">${user.id}</td>
+                            <td class="px-6 py-4 text-sm text-dark-blue font-medium">${user.first_name} ${user.last_name}</td>
+                            <td class="px-6 py-4 text-sm text-medium-gray">${user.email}</td>
+                            <td class="px-6 py-4 text-sm text-medium-gray">${new Date(user.created_at).toLocaleDateString()}</td>
+                            <td class="px-6 py-4 text-sm text-medium-gray">${user.last_login ? new Date(user.last_login).toLocaleDateString() : 'Never'}</td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full ${user.is_active ? 'bg-mint-green/20 text-green-800' : 'bg-red-100 text-red-800'}">
+                                    ${user.is_active ? 'Active' : 'Inactive'}
+                                </span>
+                            </td>
+                        </tr>
+                    `).join('');
+                } else {
+                    document.getElementById('users-table').innerHTML = `
+                        <tr>
+                            <td colspan="6" class="px-6 py-8 text-center text-medium-gray">
+                                No users found. Create your first account!
+                            </td>
+                        </tr>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+                document.getElementById('users-table').innerHTML = `
+                    <tr>
+                        <td colspan="6" class="px-6 py-8 text-center text-red-600">
+                            Error loading users. Please try again.
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+        
+        // Load data on page load
+        loadStats();
+        loadUsers();
+        
+        // Refresh every 30 seconds
+        setInterval(() => {
+            loadStats();
+            loadUsers();
+        }, 30000);
+    </script>
+</body>
+</html>

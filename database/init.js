@@ -1,5 +1,5 @@
-// Database Initialization
-const Database = require('better-sqlite3');
+// Database Initialization using sql.js (pure JavaScript, no compilation needed)
+const initSqlJs = require('sql.js');
 const path = require('path');
 const fs = require('fs');
 
@@ -10,10 +10,97 @@ if (!fs.existsSync(dbDir)) {
 }
 
 const dbPath = path.join(__dirname, 'users.db');
-const db = new Database(dbPath);
 
-// Enable foreign keys
-db.pragma('foreign_keys = ON');
+let db;
+let SQL;
+
+// Initialize database
+async function initDatabase() {
+    SQL = await initSqlJs();
+    
+    // Load existing database or create new one
+    if (fs.existsSync(dbPath)) {
+        const buffer = fs.readFileSync(dbPath);
+        db = new SQL.Database(buffer);
+    } else {
+        db = new SQL.Database();
+    }
+    
+    // Enable foreign keys
+    db.run('PRAGMA foreign_keys = ON');
+    
+    return db;
+}
+
+// Helper to save database to disk
+function saveDatabase() {
+    if (db) {
+        const data = db.export();
+        const buffer = Buffer.from(data);
+        fs.writeFileSync(dbPath, buffer);
+    }
+}
+
+// Wrapper for prepare-like functionality
+function prepare(sql) {
+    return {
+        run: (...params) => {
+            try {
+                db.run(sql, params);
+                saveDatabase();
+                const result = db.exec('SELECT last_insert_rowid() as id');
+                return { lastInsertRowid: result[0]?.values[0]?.[0] || 0 };
+            } catch (error) {
+                console.error('SQL Error:', error);
+                throw error;
+            }
+        },
+        get: (...params) => {
+            try {
+                const result = db.exec(sql, params);
+                if (result.length === 0) return null;
+                const columns = result[0].columns;
+                const values = result[0].values[0];
+                if (!values) return null;
+                const row = {};
+                columns.forEach((col, i) => row[col] = values[i]);
+                return row;
+            } catch (error) {
+                console.error('SQL Error:', error);
+                throw error;
+            }
+        },
+        all: (...params) => {
+            try {
+                const result = db.exec(sql, params);
+                if (result.length === 0) return [];
+                const columns = result[0].columns;
+                return result[0].values.map(values => {
+                    const row = {};
+                    columns.forEach((col, i) => row[col] = values[i]);
+                    return row;
+                });
+            } catch (error) {
+                console.error('SQL Error:', error);
+                throw error;
+            }
+        }
+    };
+}
+
+// Export wrapper object
+const dbWrapper = {
+    prepare,
+    exec: (sql) => {
+        db.run(sql);
+        saveDatabase();
+    },
+    close: () => {
+        saveDatabase();
+        if (db) db.close();
+    },
+    init: initDatabase
+};
 
 // Create users table
 const createUsersTable = `
@@ -71,23 +158,27 @@ const createSessionsTable = `
     )
 `;
 
-// Execute table creation
-try {
-    db.exec(createUsersTable);
-    db.exec(createLoginHistoryTable);
-    db.exec(createUserProfilesTable);
-    db.exec(createSessionsTable);
-    
-    console.log('✅ Database tables created successfully');
-    
-    // Create indexes for better performance
-    db.exec('CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)');
-    db.exec('CREATE INDEX IF NOT EXISTS idx_login_history_user_id ON login_history(user_id)');
-    db.exec('CREATE INDEX IF NOT EXISTS idx_sessions_token ON sessions(session_token)');
-    
-    console.log('✅ Database indexes created successfully');
-} catch (error) {
-    console.error('❌ Error creating database tables:', error);
-}
+// Initialize and create tables
+(async () => {
+    try {
+        await initDatabase();
+        
+        dbWrapper.exec(createUsersTable);
+        dbWrapper.exec(createLoginHistoryTable);
+        dbWrapper.exec(createUserProfilesTable);
+        dbWrapper.exec(createSessionsTable);
+        
+        console.log('✅ Database tables created successfully');
+        
+        // Create indexes for better performance
+        dbWrapper.exec('CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)');
+        dbWrapper.exec('CREATE INDEX IF NOT EXISTS idx_login_history_user_id ON login_history(user_id)');
+        dbWrapper.exec('CREATE INDEX IF NOT EXISTS idx_sessions_token ON sessions(session_token)');
+        
+        console.log('✅ Database indexes created successfully');
+    } catch (error) {
+        console.error('❌ Error creating database tables:', error);
+    }
+})();
 
-module.exports = db;
+module.exports = dbWrapper;

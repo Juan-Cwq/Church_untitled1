@@ -137,6 +137,15 @@ h1, h2, h3, h4, h5, h6 {
     transform: translateY(0);
 }
 
+.btn-primary:focus {
+    outline: 2px solid var(--ocean-blue);
+    outline-offset: 2px;
+}
+
+.btn-primary:focus:not(:focus-visible) {
+    outline: none;
+}
+
 .btn-primary > * {
     position: relative;
     z-index: 1;
@@ -171,6 +180,155 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-secondary:active {
     transform: translateY(0);
+}
+
+.btn-secondary:focus {
+    outline: 2px solid var(--ocean-blue);
+    outline-offset: 2px;
+}
+
+.btn-secondary:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* ============================================
+   BUTTON & DROPDOWN FIX
+   ============================================ */
+button, a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button:focus,
+a:focus {
+    outline: none;
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--ocean-blue);
+    outline-offset: 2px;
+}
+
+/* Prevent layout shift on focus */
+* {
+    box-sizing: border-box;
+}
+
+/* Navigation stability */
+nav {
+    min-height: 4rem;
+}
+
+nav button,
+nav a {
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Prevent button expansion on click */
+.btn-primary,
+.btn-secondary {
+    min-width: fit-content;
+    max-width: max-content;
+    white-space: nowrap;
+    width: auto !important;
+}
+
+/* Specific fix for navigation buttons */
+nav .btn-primary,
+nav .btn-secondary {
+    flex-shrink: 0;
+    width: auto !important;
+}
+
+/* Remove all default button styles that could cause expansion */
+button {
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    overflow: visible;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    line-height: normal;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Reapply button class styles with proper constraints */
+button.btn-primary,
+a.btn-primary {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem !important;
+    background-color: var(--ocean-blue) !important;
+    color: var(--white) !important;
+    font-weight: 600;
+    font-size: 1rem !important;
+    border-radius: var(--radius-lg) !important;
+    border: none !important;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px -1px rgba(0, 123, 255, 0.3) !important;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box !important;
+    width: auto !important;
+    min-width: fit-content !important;
+    max-width: max-content !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+
+/* CRITICAL: Prevent any width changes on focus/active states */
+button.btn-primary:focus,
+button.btn-primary:active,
+button.btn-primary:hover,
+a.btn-primary:focus,
+a.btn-primary:active,
+a.btn-primary:hover {
+    width: auto !important;
+    min-width: fit-content !important;
+    max-width: max-content !important;
+    padding: 0.75rem 1.5rem !important;
+}
+
+button.btn-secondary,
+a.btn-secondary {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem !important;
+    background-color: transparent !important;
+    color: var(--ocean-blue) !important;
+    font-weight: 600;
+    font-size: 1rem !important;
+    border-radius: var(--radius-lg) !important;
+    border: 2px solid var(--ocean-blue) !important;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-sizing: border-box !important;
+    width: auto !important;
+    min-width: fit-content !important;
+    max-width: max-content !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+
+/* CRITICAL: Prevent any width changes on focus/active states */
+button.btn-secondary:focus,
+button.btn-secondary:active,
+button.btn-secondary:hover,
+a.btn-secondary:focus,
+a.btn-secondary:active,
+a.btn-secondary:hover {
+    width: auto !important;
+    min-width: fit-content !important;
+    max-width: max-content !important;
+    padding: 0.75rem 1.5rem !important;
 }
 
 /* ============================================
