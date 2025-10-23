@@ -284,6 +284,12 @@
             width: 100% !important;
             max-width: 100% !important;
         }
+        
+        /* Ensure content appears above cube */
+        nav, section, footer {
+            position: relative;
+            z-index: 1;
+        }
     </style>
 </head>
 <body class="font-primary bg-white text-dark-blue">
@@ -763,6 +769,7 @@
     </footer>
     
     <!-- JavaScript -->
+    <script src="cube-background.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
