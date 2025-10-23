@@ -1,0 +1,337 @@
+/* The Connection Church - Custom Styles */
+
+/* ============================================
+   CUSTOM PROPERTIES & DESIGN TOKENS
+   ============================================ */
+:root {
+    /* Primary Colors */
+    --ocean-blue: #007bff;
+    --sky-teal: #00d4ff;
+    --mint-green: #90ee90;
+    --rose-pink: #ffb6c1;
+    
+    /* Neutral Colors */
+    --dark-blue: #1A202C;
+    --medium-gray: #4A5568;
+    --light-gray: #EDF2F7;
+    --white: #FFFFFF;
+    --black: #000000;
+    
+    /* Functional Colors */
+    --success: #38A169;
+    --warning: #ECC94B;
+    --error: #E53E3E;
+    --info: #3182CE;
+    
+    /* Typography */
+    --font-primary: 'Inter', sans-serif;
+    --font-secondary: 'DM Serif Display', serif;
+    
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    --spacing-3xl: 4rem;
+    
+    /* Border Radius */
+    --radius-sm: 0.125rem;
+    --radius-md: 0.25rem;
+    --radius-lg: 0.5rem;
+    --radius-xl: 1rem;
+    --radius-full: 9999px;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* ============================================
+   GLOBAL STYLES
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-primary);
+    color: var(--dark-blue);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-secondary);
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+/* ============================================
+   GRADIENT TEXT
+   ============================================ */
+.text-gradient {
+    background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--sky-teal) 33%, var(--mint-green) 66%, var(--rose-pink) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--ocean-blue);
+    color: var(--white);
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: var(--radius-lg);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px -1px rgba(0, 123, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--sky-teal) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.btn-primary:hover::before {
+    opacity: 1;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 123, 255, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-primary > * {
+    position: relative;
+    z-index: 1;
+}
+
+.btn-large {
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+}
+
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    background-color: transparent;
+    color: var(--ocean-blue);
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--ocean-blue);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-secondary:hover {
+    background-color: var(--ocean-blue);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 123, 255, 0.3);
+}
+
+.btn-secondary:active {
+    transform: translateY(0);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUpDelayed {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    50% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes pulseSlow {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes pulseSlower {
+    0%, 100% {
+        opacity: 0.2;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.4;
+        transform: scale(1.08);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-fade-in-up-delayed {
+    animation: fadeInUpDelayed 1.2s ease-out forwards;
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+    animation: pulseSlow 4s ease-in-out infinite;
+}
+
+.animate-pulse-slower {
+    animation: pulseSlower 6s ease-in-out infinite;
+}
+
+/* ============================================
+   NAVBAR SCROLL EFFECT
+   ============================================ */
+.navbar-scrolled {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.98);
+}
+
+/* ============================================
+   FOCUS STATES (Accessibility)
+   ============================================ */
+*:focus-visible {
+    outline: 3px solid var(--ocean-blue);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 3px solid var(--ocean-blue);
+    outline-offset: 2px;
+}
+
+/* ============================================
+   REDUCED MOTION (Accessibility)
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+/* ============================================
+   RESPONSIVE UTILITIES
+   ============================================ */
+@media (max-width: 640px) {
+    .btn-large {
+        padding: 0.875rem 1.5rem;
+        font-size: 1rem;
+    }
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--light-gray);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--sky-teal) 100%);
+    border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--sky-teal) 0%, var(--mint-green) 100%);
+}
+
+/* ============================================
+   SELECTION
+   ============================================ */
+::selection {
+    background-color: var(--ocean-blue);
+    color: var(--white);
+}
+
+::-moz-selection {
+    background-color: var(--ocean-blue);
+    color: var(--white);
+}
