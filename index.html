@@ -232,7 +232,7 @@
             position: absolute !important;
             top: 100% !important;
             left: 0 !important;
-            margin-top: 0.5rem !important;
+            margin-top: 0.25rem !important;
         }
         
         nav .relative.group:hover > div,
@@ -241,7 +241,19 @@
             position: absolute !important;
             top: 100% !important;
             left: 0 !important;
-            margin-top: 0.5rem !important;
+            margin-top: 0.25rem !important;
+        }
+        
+        /* Create invisible bridge to prevent dropdown from closing */
+        nav .relative.group::before {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            height: 0.25rem;
+            background: transparent;
+            z-index: 49;
         }
         
         /* Lock the dropdown container */
@@ -321,7 +333,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </button>
-                        <div class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-xl opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-200 z-50">
+                        <div class="absolute top-full left-0 w-48 bg-white rounded-lg shadow-xl opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-200 z-50" style="margin-top: 0.25rem;">
                             <a href="#groups" class="block px-4 py-3 text-medium-gray hover:text-ocean-blue hover:bg-light-gray transition-colors">Church Groups</a>
                             <a href="#women" class="block px-4 py-3 text-medium-gray hover:text-ocean-blue hover:bg-light-gray transition-colors">Women</a>
                             <a href="#ya" class="block px-4 py-3 text-medium-gray hover:text-ocean-blue hover:bg-light-gray transition-colors">Young Adults</a>
