@@ -1,12 +1,7 @@
 // Serverless API endpoint for chatbot
 // This runs on Vercel's backend, keeping the API key secure
 
-// Polyfill fetch for Node.js environments that don't have it
-if (!globalThis.fetch) {
-    globalThis.fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-}
-
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     // Set CORS headers
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
