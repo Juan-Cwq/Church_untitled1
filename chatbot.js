@@ -150,22 +150,79 @@ class AIChatbot {
     }
     
     async callGeminiAPI(userMessage) {
-        // Call secure backend API
-        const response = await fetch(this.apiUrl, {
+        try {
+            // Try to call secure backend API first
+            const response = await fetch(this.apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: userMessage })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`API error: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            return data.response;
+        } catch (error) {
+            console.error('Backend API failed, using direct API call:', error);
+            
+            // Fallback: Direct API call (for local testing only)
+            // This will be removed once deployed to Vercel
+            return await this.directAPICall(userMessage);
+        }
+    }
+    
+    async directAPICall(userMessage) {
+        // TEMPORARY: Direct API call for local testing
+        // This should only be used during development
+        const apiKey = 'AIzaSyC5DapG3xL-Xl3lAUIFI04L5C_UBSVHRRw';
+        const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+        
+        const context = `You are a helpful assistant for Cornerstone Miami Church, a bilingual Christian church in Miami, FL. 
+        The church is located at 5400 SW 122nd Ave, Miami, FL 33175. 
+        Service times are Sunday mornings at 9:30am.
+        The church offers various ministries including Church Groups, Women's Ministry, Young Adults, Youth, and Kids programs.
+        Be friendly, helpful, and provide accurate information about the church when asked.
+        If you don't know something specific about the church, be honest and suggest they contact the church directly at (305) 773-6148 or info@cm.church.`;
+        
+        const requestBody = {
+            contents: [{
+                parts: [{
+                    text: `${context}\n\nUser question: ${userMessage}`
+                }]
+            }],
+            generationConfig: {
+                temperature: 0.7,
+                topK: 40,
+                topP: 0.95,
+                maxOutputTokens: 1024,
+            }
+        };
+        
+        const response = await fetch(`${apiUrl}?key=${apiKey}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ message: userMessage })
+            body: JSON.stringify(requestBody)
         });
         
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || `API error: ${response.status}`);
+            const errorText = await response.text();
+            console.error('Gemini API error:', errorText);
+            throw new Error(`API error: ${response.status}`);
         }
         
         const data = await response.json();
-        return data.response;
+        
+        if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+            throw new Error('Invalid response from Gemini API');
+        }
+        
+        return data.candidates[0].content.parts[0].text;
     }
     
     addMessage(text, type) {
