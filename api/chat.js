@@ -1,6 +1,11 @@
 // Serverless API endpoint for chatbot
 // This runs on Vercel's backend, keeping the API key secure
 
+// Polyfill fetch for Node.js environments that don't have it
+if (!globalThis.fetch) {
+    globalThis.fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+}
+
 export default async function handler(req, res) {
     // Set CORS headers
     res.setHeader('Access-Control-Allow-Credentials', true);
@@ -22,17 +27,28 @@ export default async function handler(req, res) {
     }
 
     try {
+        console.log('Chat API called');
+        console.log('Request method:', req.method);
+        console.log('Request body:', req.body);
+        
         const { message } = req.body;
 
         if (!message) {
+            console.error('No message provided');
             return res.status(400).json({ error: 'Message is required' });
         }
+
+        console.log('Message received:', message);
 
         // Get API key from environment variable
         const apiKey = process.env.GEMINI_API_KEY;
         
+        console.log('API key exists:', !!apiKey);
+        console.log('API key length:', apiKey ? apiKey.length : 0);
+        
         if (!apiKey) {
             console.error('GEMINI_API_KEY not found in environment variables');
+            console.error('Available env vars:', Object.keys(process.env));
             return res.status(500).json({ error: 'API key not configured' });
         }
 
@@ -87,9 +103,13 @@ export default async function handler(req, res) {
 
     } catch (error) {
         console.error('Chat API error:', error);
+        console.error('Error stack:', error.stack);
+        console.error('Error name:', error.name);
+        console.error('Error message:', error.message);
         return res.status(500).json({ 
             error: 'Failed to process message',
-            details: error.message 
+            details: error.message,
+            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
         });
     }
 }
