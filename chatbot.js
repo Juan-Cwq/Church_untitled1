@@ -144,8 +144,11 @@ class AIChatbot {
             this.addMessage(response, 'bot');
         } catch (error) {
             this.hideTypingIndicator();
+            const errorMsg = `Error: ${error.message}. Check console for details.`;
             this.addMessage('Sorry, I encountered an error. Please try again.', 'bot');
             console.error('Chatbot error:', error);
+            console.error('Error details:', error.message);
+            console.error('Full error:', JSON.stringify(error, null, 2));
         }
     }
     
@@ -168,10 +171,17 @@ class AIChatbot {
             return data.response;
         } catch (error) {
             console.error('Backend API failed, using direct API call:', error);
+            console.error('Backend error details:', error.message);
             
             // Fallback: Direct API call (for local testing only)
             // This will be removed once deployed to Vercel
-            return await this.directAPICall(userMessage);
+            try {
+                return await this.directAPICall(userMessage);
+            } catch (directError) {
+                console.error('Direct API call also failed:', directError);
+                console.error('Direct API error details:', directError.message);
+                throw directError;
+            }
         }
     }
     
@@ -179,7 +189,7 @@ class AIChatbot {
         // TEMPORARY: Direct API call for local testing
         // This should only be used during development
         const apiKey = 'AIzaSyC5DapG3xL-Xl3lAUIFI04L5C_UBSVHRRw';
-        const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+        const apiUrl = 'https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent';
         
         const context = `You are a helpful assistant for Cornerstone Miami Church, a bilingual Christian church in Miami, FL. 
         The church is located at 5400 SW 122nd Ave, Miami, FL 33175. 

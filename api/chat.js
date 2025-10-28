@@ -31,7 +31,7 @@ export default async function handler(req, res) {
         If you don't know something specific about the church, be honest and suggest they contact the church directly at (305) 773-6148 or info@cm.church.`;
 
         // Call Gemini API
-        const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+        const apiUrl = 'https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent';
         
         const requestBody = {
             contents: [{
