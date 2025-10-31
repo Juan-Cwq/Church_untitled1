@@ -303,6 +303,19 @@
             position: relative;
             z-index: 1;
         }
+        
+        /* Fix navigation visibility */
+        @media (min-width: 768px) {
+            .desktop-nav {
+                display: flex !important;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .desktop-nav {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body class="font-primary bg-white text-dark-blue">
@@ -323,7 +336,7 @@
                 </div>
                 
                 <!-- Desktop Navigation -->
-                <div class="hidden md:flex items-center space-x-6 lg:space-x-8">
+                <div class="desktop-nav hidden md:flex items-center space-x-6 lg:space-x-8">
                     <div class="relative group">
                         <a href="#about" class="text-medium-gray hover:text-ocean-blue transition-colors duration-200 font-medium">About Us</a>
                     </div>
